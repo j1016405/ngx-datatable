@@ -13,7 +13,7 @@ import {
     <div
       *ngFor="let colGroup of columnsByPin; let i = index; trackBy: trackByGroups"
       class="datatable-row-{{colGroup.type}} datatable-row-group"
-      [ngStyle]="stylesByGroup(colGroup.type)">
+      [ngStyle]="stylesByGroup(colGroup.type)" draggable="true" (dragstart)="onDragStart($event)">
       <datatable-body-cell
         *ngFor="let column of colGroup.columns; let ii = index; trackBy: columnTrackingFn"
         tabindex="-1"
@@ -82,6 +82,7 @@ export class DataTableBodyRowComponent {
   }
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
+  @Output() dragStart: EventEmitter<{event: DragEvent, row: any}> = new EventEmitter<{event: DragEvent, row: any}>();
 
   element: any;
   columnGroupWidths: any;
@@ -157,6 +158,10 @@ export class DataTableBodyRowComponent {
     const colsByPin = columnsByPin(val);
     this.columnsByPin = columnsByPinArr(val);
     this.columnGroupWidths = columnGroupWidths(colsByPin, val);
+  }
+
+  onDragStart($event:DragEvent):void {
+	  this.dragStart.emit({ event: $event, row: this.row });
   }
 
 }
