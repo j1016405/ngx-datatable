@@ -64,7 +64,8 @@ import { DatatableRowDetailDirective } from './row-detail';
         (activate)="activate.emit($event)"
         (rowContextmenu)="rowContextmenu.emit($event)"
         (select)="onBodySelect($event)"
-        (scroll)="onBodyScroll($event)">
+        (scroll)="onBodyScroll($event)"
+        (dragStart)="onDragStart($event)">
       </datatable-body>
       <datatable-footer
         *ngIf="footerHeight"
@@ -461,6 +462,13 @@ export class DatatableComponent implements OnInit, AfterViewInit, DoCheck {
    * @memberOf DatatableComponent
    */
   @Output() rowContextmenu = new EventEmitter<{ event: MouseEvent, row: any }>(false);
+
+  /**
+   * The dragStart event was invoked on a row.
+   *
+   * @memberOf DatatableComponent
+   */
+  @Output() dragStart = new EventEmitter<{ event: DragEvent, row: any }>();
 
   /**
    * CSS class applied if the header height if fixed height.
@@ -1018,6 +1026,18 @@ export class DatatableComponent implements OnInit, AfterViewInit, DoCheck {
    */
   onBodySelect(event: any): void {
     this.select.emit(event);
+  }
+  
+  /**
+   * A row was selected for drag
+   *
+   * @param {*} event
+   *
+   * @memberOf DatatableComponent
+   */
+  onDragStart(event:any):void {
+	 this.dragStart.emit(event); 
+	 console.log("onDragStart");
   }
 
 }
