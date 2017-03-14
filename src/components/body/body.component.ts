@@ -45,7 +45,8 @@ import { ScrollerComponent } from './scroller.component';
             [rowHeight]="rowHeight"
             [row]="row"
             [rowClass]="rowClass"
-            (activate)="selector.onActivate($event, i)">
+            (activate)="selector.onActivate($event, i)"
+            (dragStart)="dragStart.emit($event)">
           </datatable-body-row>
         </datatable-row-wrapper>
       </datatable-scroller>
@@ -156,6 +157,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Output() select: EventEmitter<any> = new EventEmitter();
   @Output() detailToggle: EventEmitter<any> = new EventEmitter();
   @Output() rowContextmenu = new EventEmitter<{event: MouseEvent, row: any}>(false);
+  @Output() dragStart = new EventEmitter<{event: DragEvent, row: any}>();
 
   @ViewChild(ScrollerComponent) scroller: ScrollerComponent;
 
